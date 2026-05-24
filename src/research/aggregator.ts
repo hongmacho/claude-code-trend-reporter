@@ -1,4 +1,5 @@
 import { RepoItem, TrendItem, TrendCategory, ResearchResult } from '../types';
+import { getDocUpdates } from './docs';
 
 // mock 데이터 (오프라인/API 실패 시 폴백)
 const MOCK_DATA: Record<TrendCategory, TrendItem[]> = {
@@ -346,6 +347,7 @@ export function aggregateResults(
       mcpServers: MOCK_DATA['mcp-servers'],
       plugins: MOCK_DATA.plugins,
       settings: MOCK_DATA.settings,
+      docUpdates: getDocUpdates(),
       researchedAt: new Date().toISOString(),
       sources: ['Built-in curated data (offline mode)'],
       isMockData: true,
@@ -378,6 +380,7 @@ export function aggregateResults(
     mcpServers: mcpServers.slice(0, 6),
     plugins: plugins.slice(0, 4),
     settings: MOCK_DATA.settings,
+    docUpdates: getDocUpdates(),
     researchedAt: new Date().toISOString(),
     sources: [
       'https://api.github.com/search/repositories?q=claude+code+skills',

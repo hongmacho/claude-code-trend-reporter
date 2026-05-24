@@ -1,4 +1,4 @@
-import { ResearchResult, TrendItem, TrendCategory } from '../types';
+import { ResearchResult, TrendItem, TrendCategory, DocUpdate } from '../types';
 import * as fs from 'fs';
 import * as path from 'path';
 import openBrowser from 'open';
@@ -48,6 +48,39 @@ function renderCard(item: TrendItem): string {
       </div>
       <a class="card-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${linkLabel} →</a>
     </div>`;
+}
+
+const DOC_BADGE_LABELS: Record<DocUpdate['category'], string> = {
+  'new-feature': '새 기능',
+  'improvement': '개선',
+  'tip': '팁',
+};
+
+function renderDocCard(item: DocUpdate): string {
+  const badgeLabel = DOC_BADGE_LABELS[item.category];
+  const dateHtml = item.date ? `<p class="doc-date">📅 ${escapeHtml(item.date)}</p>` : '';
+  return `
+    <div class="card">
+      <span class="doc-badge ${escapeHtml(item.category)}">${badgeLabel}</span>
+      <div class="card-header">
+        <h3 class="card-title">${escapeHtml(item.title)}</h3>
+      </div>
+      <p class="card-desc">${escapeHtml(item.summary)}</p>
+      <p class="doc-detail">${escapeHtml(item.detail)}</p>
+      ${dateHtml}
+      <a class="card-link" href="${escapeHtml(item.docUrl)}" target="_blank" rel="noopener">📄 공식 문서 보기 →</a>
+    </div>`;
+}
+
+function renderDocSection(items: readonly DocUpdate[]): string {
+  if (items.length === 0) return '';
+  return `
+    <section class="section" id="doc_updates">
+      <h2>📋 공식 문서 업데이트 & 팁</h2>
+      <div class="cards">
+        ${items.map(renderDocCard).join('')}
+      </div>
+    </section>`;
 }
 
 function renderSection(title: string, emoji: string, items: readonly TrendItem[], category: TrendCategory): string {
@@ -102,6 +135,17 @@ export function generateHtml(result: ResearchResult): string {
     code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: .15rem .4rem; font-family: 'Fira Code', monospace; font-size: .8rem; word-break: break-all; }
     .sources { margin-top: 1rem; font-size: .8rem; color: var(--text-muted); }
     .sources a { color: var(--accent2); }
+    .doc-badge { display: inline-block; font-size: .7rem; font-weight: 700; padding: .15rem .5rem; border-radius: 99px; margin-bottom: .5rem; }
+    .doc-badge.new-feature { background: #14532d; color: #4ade80; }
+    .doc-badge.improvement { background: #431407; color: #fb923c; }
+    .doc-badge.tip { background: #1e3a5f; color: #60a5fa; }
+    @media (prefers-color-scheme: light) {
+      .doc-badge.new-feature { background: #dcfce7; color: #166534; }
+      .doc-badge.improvement { background: #ffedd5; color: #9a3412; }
+      .doc-badge.tip { background: #dbeafe; color: #1d4ed8; }
+    }
+    .doc-detail { font-size: .82rem; color: var(--text-muted); margin-top: .5rem; line-height: 1.6; }
+    .doc-date { font-size: .75rem; color: var(--text-muted); margin-top: .8rem; }
     .card-link { display: inline-block; margin-top: 1rem; padding: .4rem .9rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--accent); font-size: .82rem; font-weight: 600; text-decoration: none; transition: background .2s, border-color .2s; }
     .card-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
     footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: .85rem; border-top: 1px solid var(--border); }
@@ -116,6 +160,7 @@ export function generateHtml(result: ResearchResult): string {
     result.mcpServers.length > 0 ? '<li><a href="#mcp_servers">🔌 MCP Servers</a></li>' : '',
     result.plugins.length > 0 ? '<li><a href="#plugins">🧩 Plugins</a></li>' : '',
     result.settings.length > 0 ? '<li><a href="#settings">⚙️ Settings</a></li>' : '',
+    result.docUpdates.length > 0 ? '<li><a href="#doc_updates">📋 공식 업데이트</a></li>' : '',
   ].filter(Boolean).join('');
 
   const sections = [
@@ -123,6 +168,7 @@ export function generateHtml(result: ResearchResult): string {
     renderSection('MCP 서버', '🔌', result.mcpServers, 'mcp-servers'),
     renderSection('플러그인', '🧩', result.plugins, 'plugins'),
     renderSection('설정 & 팁', '⚙️', result.settings, 'settings'),
+    renderDocSection(result.docUpdates),
   ].join('');
 
   const sourcesHtml = result.sources

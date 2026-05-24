@@ -18,11 +18,20 @@ export interface TrendItem {
     readonly category: TrendCategory;
 }
 export type TrendCategory = 'skills' | 'mcp-servers' | 'plugins' | 'settings';
+export interface DocUpdate {
+    readonly title: string;
+    readonly summary: string;
+    readonly detail: string;
+    readonly docUrl: string;
+    readonly category: 'new-feature' | 'tip' | 'improvement';
+    readonly date?: string;
+}
 export interface ResearchResult {
     readonly skills: readonly TrendItem[];
     readonly mcpServers: readonly TrendItem[];
     readonly plugins: readonly TrendItem[];
     readonly settings: readonly TrendItem[];
+    readonly docUpdates: readonly DocUpdate[];
     readonly researchedAt: string;
     readonly sources: readonly string[];
     readonly isMockData: boolean;

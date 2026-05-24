@@ -23,12 +23,23 @@ export interface TrendItem {
 
 export type TrendCategory = 'skills' | 'mcp-servers' | 'plugins' | 'settings';
 
+// 공식 문서 업데이트/팁 항목
+export interface DocUpdate {
+  readonly title: string;
+  readonly summary: string;
+  readonly detail: string;
+  readonly docUrl: string;
+  readonly category: 'new-feature' | 'tip' | 'improvement';
+  readonly date?: string;
+}
+
 // 리서치 결과
 export interface ResearchResult {
   readonly skills: readonly TrendItem[];
   readonly mcpServers: readonly TrendItem[];
   readonly plugins: readonly TrendItem[];
   readonly settings: readonly TrendItem[];
+  readonly docUpdates: readonly DocUpdate[];
   readonly researchedAt: string;
   readonly sources: readonly string[];
   readonly isMockData: boolean;

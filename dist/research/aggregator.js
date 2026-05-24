@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MOCK_DATA = void 0;
 exports.aggregateResults = aggregateResults;
+const docs_1 = require("./docs");
 // mock 데이터 (오프라인/API 실패 시 폴백)
 const MOCK_DATA = {
     skills: [
@@ -341,6 +342,7 @@ function aggregateResults(repoMap, usedMock) {
             mcpServers: MOCK_DATA['mcp-servers'],
             plugins: MOCK_DATA.plugins,
             settings: MOCK_DATA.settings,
+            docUpdates: (0, docs_1.getDocUpdates)(),
             researchedAt: new Date().toISOString(),
             sources: ['Built-in curated data (offline mode)'],
             isMockData: true,
@@ -373,6 +375,7 @@ function aggregateResults(repoMap, usedMock) {
         mcpServers: mcpServers.slice(0, 6),
         plugins: plugins.slice(0, 4),
         settings: MOCK_DATA.settings,
+        docUpdates: (0, docs_1.getDocUpdates)(),
         researchedAt: new Date().toISOString(),
         sources: [
             'https://api.github.com/search/repositories?q=claude+code+skills',
