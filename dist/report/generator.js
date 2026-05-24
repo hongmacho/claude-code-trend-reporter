@@ -64,8 +64,12 @@ function renderCard(item) {
         ? `<span class="stars">⭐ ${item.stars.toLocaleString()}</span>`
         : '';
     const linkLabel = item.url.includes('github.com') ? '🔗 GitHub에서 보기' : '🔗 자세히 보기';
+    const officialBadge = item.url.includes('docs.anthropic.com')
+        ? '<span class="doc-badge new-feature" style="margin-bottom:.3rem">공식 문서</span> '
+        : '';
     return `
     <div class="card">
+      ${officialBadge ? `<div>${officialBadge}</div>` : ''}
       <div class="card-header">
         <h3 class="card-title">${escapeHtml(item.name)}</h3>
         ${starsHtml}

@@ -1,5 +1,6 @@
 import { RepoItem, TrendItem, TrendCategory, ResearchResult } from '../types';
 import { getDocUpdates } from './docs';
+import { getInstalledSlugs } from './installed';
 
 // mock 데이터 (오프라인/API 실패 시 폴백)
 const MOCK_DATA: Record<TrendCategory, TrendItem[]> = {
@@ -304,6 +305,15 @@ const KNOWN_REPOS_KO: Array<{ match: RegExp; info: KoInfo }> = [
   },
 ];
 
+function isInstalledItem(item: TrendItem, installedSlugs: Set<string>): boolean {
+  const nameLower = item.name.toLowerCase();
+  const urlLower = item.url.toLowerCase();
+  for (const slug of installedSlugs) {
+    if (nameLower.includes(slug) || urlLower.includes(slug)) return true;
+  }
+  return false;
+}
+
 function findKoInfo(repo: RepoItem): KoInfo | null {
   for (const entry of KNOWN_REPOS_KO) {
     if (entry.match.test(repo.fullName) || entry.match.test(repo.name)) {
@@ -341,11 +351,14 @@ export function aggregateResults(
   repoMap: Map<string, RepoItem[]>,
   usedMock: boolean
 ): ResearchResult {
+  const installed = getInstalledSlugs();
+  const notInstalled = (item: TrendItem) => !isInstalledItem(item, installed);
+
   if (usedMock) {
     return {
-      skills: MOCK_DATA.skills,
-      mcpServers: MOCK_DATA['mcp-servers'],
-      plugins: MOCK_DATA.plugins,
+      skills: MOCK_DATA.skills.filter(notInstalled),
+      mcpServers: MOCK_DATA['mcp-servers'].filter(notInstalled),
+      plugins: MOCK_DATA.plugins.filter(notInstalled),
       settings: MOCK_DATA.settings,
       docUpdates: getDocUpdates(),
       researchedAt: new Date().toISOString(),
@@ -376,9 +389,9 @@ export function aggregateResults(
   }
 
   return {
-    skills: skills.slice(0, 6),
-    mcpServers: mcpServers.slice(0, 6),
-    plugins: plugins.slice(0, 4),
+    skills: skills.filter(notInstalled).slice(0, 6),
+    mcpServers: mcpServers.filter(notInstalled).slice(0, 6),
+    plugins: plugins.filter(notInstalled).slice(0, 4),
     settings: MOCK_DATA.settings,
     docUpdates: getDocUpdates(),
     researchedAt: new Date().toISOString(),

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MOCK_DATA = void 0;
 exports.aggregateResults = aggregateResults;
 const docs_1 = require("./docs");
+const installed_1 = require("./installed");
 // mock 데이터 (오프라인/API 실패 시 폴백)
 const MOCK_DATA = {
     skills: [
@@ -303,6 +304,15 @@ const KNOWN_REPOS_KO = [
         },
     },
 ];
+function isInstalledItem(item, installedSlugs) {
+    const nameLower = item.name.toLowerCase();
+    const urlLower = item.url.toLowerCase();
+    for (const slug of installedSlugs) {
+        if (nameLower.includes(slug) || urlLower.includes(slug))
+            return true;
+    }
+    return false;
+}
 function findKoInfo(repo) {
     for (const entry of KNOWN_REPOS_KO) {
         if (entry.match.test(repo.fullName) || entry.match.test(repo.name)) {
@@ -336,11 +346,13 @@ function repoToTrendItem(repo, category) {
     };
 }
 function aggregateResults(repoMap, usedMock) {
+    const installed = (0, installed_1.getInstalledSlugs)();
+    const notInstalled = (item) => !isInstalledItem(item, installed);
     if (usedMock) {
         return {
-            skills: MOCK_DATA.skills,
-            mcpServers: MOCK_DATA['mcp-servers'],
-            plugins: MOCK_DATA.plugins,
+            skills: MOCK_DATA.skills.filter(notInstalled),
+            mcpServers: MOCK_DATA['mcp-servers'].filter(notInstalled),
+            plugins: MOCK_DATA.plugins.filter(notInstalled),
             settings: MOCK_DATA.settings,
             docUpdates: (0, docs_1.getDocUpdates)(),
             researchedAt: new Date().toISOString(),
@@ -371,9 +383,9 @@ function aggregateResults(repoMap, usedMock) {
             skills.push(item);
     }
     return {
-        skills: skills.slice(0, 6),
-        mcpServers: mcpServers.slice(0, 6),
-        plugins: plugins.slice(0, 4),
+        skills: skills.filter(notInstalled).slice(0, 6),
+        mcpServers: mcpServers.filter(notInstalled).slice(0, 6),
+        plugins: plugins.filter(notInstalled).slice(0, 4),
         settings: MOCK_DATA.settings,
         docUpdates: (0, docs_1.getDocUpdates)(),
         researchedAt: new Date().toISOString(),
