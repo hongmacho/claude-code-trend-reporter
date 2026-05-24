@@ -1,0 +1,9 @@
+node_modules/
+.omc/
+*.db
+*.sqlite
+.env
+.env.local
+*_report.html
+*.log
+.DS_Store
