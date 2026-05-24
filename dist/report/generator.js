@@ -63,18 +63,17 @@ function renderCard(item) {
     const starsHtml = item.stars > 0
         ? `<span class="stars">⭐ ${item.stars.toLocaleString()}</span>`
         : '';
+    const linkLabel = item.url.includes('github.com') ? '🔗 GitHub에서 보기' : '🔗 자세히 보기';
     return `
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">
-          <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.name)}</a>
-        </h3>
+        <h3 class="card-title">${escapeHtml(item.name)}</h3>
         ${starsHtml}
       </div>
       <p class="card-desc">${escapeHtml(item.description)}</p>
       <div class="card-meta">
         <div class="meta-item">
-          <span class="meta-label">💡 인기 이유</span>
+          <span class="meta-label">💡 왜 인기인가</span>
           <span>${escapeHtml(item.whyPopular)}</span>
         </div>
         <div class="meta-item">
@@ -82,6 +81,7 @@ function renderCard(item) {
           <code>${escapeHtml(item.howToInstall)}</code>
         </div>
       </div>
+      <a class="card-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${linkLabel} →</a>
     </div>`;
 }
 function renderSection(title, emoji, items, category) {
@@ -136,6 +136,8 @@ function generateHtml(result) {
     code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: .15rem .4rem; font-family: 'Fira Code', monospace; font-size: .8rem; word-break: break-all; }
     .sources { margin-top: 1rem; font-size: .8rem; color: var(--text-muted); }
     .sources a { color: var(--accent2); }
+    .card-link { display: inline-block; margin-top: 1rem; padding: .4rem .9rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--accent); font-size: .82rem; font-weight: 600; text-decoration: none; transition: background .2s, border-color .2s; }
+    .card-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
     footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: .85rem; border-top: 1px solid var(--border); }
   `;
     const mockBadge = result.isMockData
