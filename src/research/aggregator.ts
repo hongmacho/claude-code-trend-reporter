@@ -388,10 +388,13 @@ export function aggregateResults(
     else skills.push(item);
   }
 
+  const MIN_STARS = 1000;
+  const hasEnoughStars = (item: TrendItem) => item.stars >= MIN_STARS;
+
   return {
-    skills: skills.filter(notInstalled).slice(0, 6),
-    mcpServers: mcpServers.filter(notInstalled).slice(0, 6),
-    plugins: plugins.filter(notInstalled).slice(0, 4),
+    skills: skills.filter(notInstalled).filter(hasEnoughStars),
+    mcpServers: mcpServers.filter(notInstalled).filter(hasEnoughStars),
+    plugins: plugins.filter(notInstalled).filter(hasEnoughStars),
     settings: MOCK_DATA.settings,
     docUpdates: getDocUpdates(),
     researchedAt: new Date().toISOString(),
