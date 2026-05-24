@@ -8,10 +8,14 @@ exports.fetchAllTrends = fetchAllTrends;
 const axios_1 = __importDefault(require("axios"));
 const GITHUB_API_BASE = 'https://api.github.com';
 const SEARCH_QUERIES = [
-    { q: 'claude+code+skills', label: 'skills' },
-    { q: 'claude+code+mcp', label: 'mcp' },
+    { q: 'claude+code+skills+in:name,description', label: 'skills' },
+    { q: 'claude+code+mcp+in:name,description', label: 'mcp' },
     { q: 'oh-my-claudecode', label: 'omc' },
     { q: 'topic:claude-code', label: 'ecosystem' },
+    { q: 'github-mcp-server', label: 'github-mcp' },
+    { q: 'playwright-mcp', label: 'playwright-mcp' },
+    { q: 'context7+mcp', label: 'context7' },
+    { q: 'awesome-claude-code', label: 'awesome' },
 ];
 // GitHub API로 레포 검색 (실패 시 null 반환)
 async function searchRepos(query) {
