@@ -232,9 +232,9 @@ const KNOWN_REPOS_KO: Array<{ match: RegExp; info: KoInfo }> = [
   {
     match: /cc.switch/i,
     info: {
-      description: 'Claude Code 프로파일과 설정을 프로젝트별로 빠르게 전환하는 CLI 유틸리티. API 키, CLAUDE.md, 훅 설정을 세트로 관리합니다.',
-      whyPopular: '여러 클라이언트 프로젝트를 동시에 진행하는 프리랜서나 에이전시 개발자에게 필수 도구입니다. "클라이언트 A 설정"으로 전환 한 번에 완전히 다른 환경에서 작업할 수 있어 실수와 혼동을 방지합니다.',
-      howToInstall: 'npm install -g cc-switch && cc-switch init',
+      description: 'Claude Code·Codex·Gemini CLI·OpenCode·OpenClaw 5개 AI CLI 도구를 한 곳에서 관리하는 크로스플랫폼 데스크톱 앱 (Tauri 2 + SQLite). API 프로바이더 전환, MCP 서버·Skills 통합 관리, 시스템 트레이 빠른 전환을 시각적 GUI로 제공합니다.',
+      whyPopular: 'AI CLI 도구가 다양해지면서 각 도구마다 다른 형식의 설정 파일(JSON/TOML/.env)을 손으로 편집해야 했던 고통을 완전히 해결했습니다. 50개 이상의 API 프로바이더 프리셋과 원클릭 전환, SQLite 원자적 쓰기로 설정 손상 방지까지 — 커뮤니티에서 "없어서는 안 될 도구"로 평가받으며 79k 스타를 달성했습니다.',
+      howToInstall: 'ccswitch.io 공식 사이트에서 Windows·macOS·Linux 설치 파일 다운로드',
     },
   },
   {
@@ -246,11 +246,11 @@ const KNOWN_REPOS_KO: Array<{ match: RegExp; info: KoInfo }> = [
     },
   },
   {
-    match: /ui.ux.pro|ui.ux.max.skill/i,
+    match: /ui.ux.pro.max|nextlevelbuilder\/ui/i,
     info: {
-      description: '프론트엔드 UI/UX 전문 Claude Code 스킬. 디자인 시스템 생성, 접근성 감사, 반응형 레이아웃, 애니메이션 구현을 전문으로 합니다.',
-      whyPopular: '백엔드 개발자가 "디자이너 없이 그럴듯한 UI를 만들 수 있게 됐다"고 평가합니다. shadcn/ui·Tailwind 기반의 현대적 컴포넌트를 WCAG 접근성 기준에 맞게 생성해주는 기능이 특히 호평받습니다.',
-      howToInstall: 'CLAUDE.md에 스킬 지시 추가  # 저장소 README 참조',
+      description: 'Claude Code·Cursor·Codex·Copilot 등 모든 AI 코딩 도구에 디자인 지능을 추가하는 스킬. 161개 산업별 추론 규칙과 67개 UI 스타일 라이브러리를 바탕으로, 업종을 분석해 색상·폰트·레이아웃·금기 패턴을 포함한 완전한 디자인 시스템을 자동 생성합니다.',
+      whyPopular: 'AI가 UI 코드를 짜면 항상 "무난하지만 밋밋한" 결과물이 나왔습니다. 이 스킬은 코드 작성 전에 먼저 161개 업종 규칙으로 최적 디자인 시스템을 결정하고 구현합니다. "뷰티 스파 랜딩 → Soft Pink + Cormorant Garamond + 네온 금지" 같은 업종 맞춤 설계가 자동으로 이뤄져, 백엔드 개발자도 디자이너 없이 전문적인 UI를 만들 수 있게 됐다는 평이 퍼지며 82k 스타를 달성했습니다.',
+      howToInstall: 'npx uipro-cli install  # 또는 uupm.cc에서 설치 가이드 확인',
     },
   },
   {
